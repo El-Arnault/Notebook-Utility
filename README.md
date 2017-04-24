@@ -1,6 +1,6 @@
 # Notepad
-    Command-line utility for taking notes.
-    Call with -h (--help) to get the list of options.
+Command-line utility for taking notes. <br />
+Call with -h (--help) to get the list of options. <br />
 
 ## Options:
 - -add (--add)    [entry]  Add a note
