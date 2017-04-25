@@ -1,4 +1,4 @@
-# Notepad
+# Notebook Utility
 Command-line utility for taking notes. <br />
 Call with -h (--help) to get the list of options. <br />
 
