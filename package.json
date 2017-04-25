@@ -1,6 +1,6 @@
 {
-  "name": "notebook",
-  "version": "1.0.0",
+  "name": "notebook-utility",
+  "version": "1.0.1",
   "description": "A command-line utility for taking notes.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   "keywords": [
     "notes",
     "notebook",
-    "command-line",
+    "command0line",
     "terminal",
     "utility"
   ],
