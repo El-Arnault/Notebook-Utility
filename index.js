@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /* ArgError */
 function ArgError(message) {
     this.message = message;
@@ -71,7 +73,7 @@ NoteList.prototype.print = function() {
     console.log("-------------------");
     var list = this.toArray();
     var i = 1;
-    for (entry of list) {
+    for (let entry of list) {
         console.log(`${i++}) ${entry}`);
     }
     console.log("-------------------");
@@ -100,6 +102,7 @@ function printMan() {
 /* Main Logic */
 var note = new NoteList();
 var argv = process.argv.slice(2);
+argv[0] = "-p";
 try {
     if (argv.length == 0)
         console.log('Call "notes" with -h or --help to get information about all available options');
@@ -136,9 +139,5 @@ try {
         }
     }
 } catch(err) {
-    if (err instanceof ArgError) {
-        console.error(err.message);
-    } else {
-        throw err;
-    }
+    console.error(err.message);
 }
