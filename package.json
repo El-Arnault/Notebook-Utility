@@ -1,29 +1,28 @@
 {
-  "name": "notebook-utility",
-  "version": "1.0.6",
-  "description": "A command-line utility for taking notes.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/El-Arnault/Notepad.git"
-  },
-  "keywords": [
-    "notes",
-    "notebook",
-    "command0line",
-    "terminal",
-    "utility"
-  ],
-  "author": "Max Zhuravsky",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/El-Arnault/Notepad/issues"
-  },
-  "bin": {
-    "notes": "./index.js"
-  },
-  "homepage": "https://github.com/El-Arnault/Notepad#readme"
+    "name": "notebook-utility",
+    "version": "1.0.7",
+    "description": "A command-line utility for taking notes.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/paper-lark/notebook-utility.git"
+    },
+    "keywords": [
+        "note",
+        "notebook",
+        "command line",
+        "terminal"
+    ],
+    "author": "Max Zhuravsky",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/paper-lark/notebook-utility/issues"
+    },
+    "bin": {
+        "notes": "./index.js"
+    },
+    "homepage": "https://github.com/paper-lark/notebook-utility#readme"
 }
