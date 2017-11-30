@@ -1,0 +1,17 @@
+# Temporary file
+data.json
+
+# Dependency directories
+node_modules/
+
+# Visual Studio Code folder
+.vscode
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history

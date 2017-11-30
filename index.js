@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /* Export modules */
-const NoteList = require("./note_list.js");
-const ArgError = require("./arg_error.js");
+const NoteList = require("./notelist.js");
+const ArgumentError = require("./argerror.js");
 
 /* Function prints manual */
 function print_man() {
@@ -35,9 +35,9 @@ try {
                 break;
             /* Delete note */
             case "-d": case "--delete":
-                let index = Number(argv[1]);
+                let index = Number(extra[0]);
                 if (!Number.isInteger(index)) {
-                    throw new ArgError("Argument for delete must be a number");
+                    throw new ArgumentError("Argument for delete must be a number");
                 }
                 note.delete(index);
                 note.serialize();
@@ -61,14 +61,14 @@ try {
                 break;
             /* Unknown argument */
             default:
-                throw new ArgError("Invalid option passed :c Please, call with \"-h\" or \"--help\" for help.");
+                throw new ArgumentError("Invalid option passed :c Please, call with \"-h\" or \"--help\" for help.");
         }
     }
 } catch(err) {
     /* Handle known errors */
-    if (err instanceof ArgError) {
-        console.error("> Error: " + err.message);
+    if (err instanceof ArgumentError) {
+        console.error(err.message);
     } else {
-        throw error;
+        throw err;
     }
 }

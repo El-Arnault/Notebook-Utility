@@ -1,9 +1,10 @@
 {
     "name": "notebook-utility",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "A command-line utility for taking notes.",
     "main": "index.js",
     "scripts": {
+        "start": "./index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -24,5 +25,10 @@
     "bin": {
         "notes": "./index.js"
     },
-    "homepage": "https://github.com/paper-lark/notebook-utility#readme"
+    "homepage": "https://github.com/paper-lark/notebook-utility#readme",
+    "devDependencies": {
+        "eslint": "^4.12.1",
+        "eslint-plugin-node": "^5.2.1"
+    },
+    "dependencies": {}
 }
