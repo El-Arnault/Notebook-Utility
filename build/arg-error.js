@@ -1,5 +1,10 @@
-/* Argument Error */
-function ArgumentError(message) {
+/*       */
+
+/**
+ * Module contains definition of Argument Error class.
+ */
+
+function ArgumentError(message         ) {
     this.message = message;
     this.stack = (new Error()).stack;
 }

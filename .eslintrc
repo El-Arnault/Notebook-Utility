@@ -11,8 +11,14 @@
         }
     },
     "plugins": [
-        "node"
+        "node",
+        "flowtype"
     ],
+
+    "extends": [
+        "plugin:flowtype/recommended"
+    ],
+
     "rules": {
         // Rules for indentation
         "indent": [

@@ -1,8 +1,13 @@
 #!/usr/bin/env node
+/*       */
+
+/**
+ * Main script for CLI.
+ */
 
 /* Export modules */
 const NoteList = require("./notelist.js");
-const ArgumentError = require("./argerror.js");
+const ArgumentError = require("./arg-error.js");
 
 /* Function prints manual */
 function print_man() {
