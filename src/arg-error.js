@@ -4,10 +4,10 @@
  * Module contains definition of Argument Error class.
  */
 
-function ArgumentError(message : string) {
-    this.message = message;
-    this.stack = (new Error()).stack;
+export default class ArgumentError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.message = message;
+        this.stack = (new Error()).stack;
+    }
 }
-ArgumentError.prototype = Object.create(Error.prototype);
-
-module.exports = ArgumentError;

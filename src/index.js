@@ -6,11 +6,11 @@
  */
 
 /* Export modules */
-const NoteList = require("./notelist.js");
-const ArgumentError = require("./arg-error.js");
+import NoteList from "./notelist.js";
+import ArgumentError from "./arg-error.js";
 
 /* Function prints manual */
-function print_man() {
+function printManual() {
     console.log("Options:\n");
     console.log("-a --add    [entry]  Add a note");
     console.log("-d --delete [index]  Delete a note with the given index");
@@ -19,54 +19,58 @@ function print_man() {
 }
 
 /* Initialize note list */
-let note = new NoteList();
+const file = "data.json";
+let note = NoteList.fromFile(file);
 let command = process.argv[2];
 let extra = process.argv.slice(3);
 try {
     /* Process arguments */
     if (command == undefined) {
-        console.log("Call \"notes\" with -h or --help to get information about all available options");
+        console.log("Call \"notes -h\" to get information about the program");
     } else {
         switch(command) {
-            /* Add note */
             case "-a": case "--add":
+                /* Add note to the note tracker */
                 let entry = extra.reduce(function(prev, current, index) {
                     return index == 0 ? current : prev + " " + current;
                 }, "");
                 note.add(entry);
-                note.serialize();
+                note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
                 break;
-            /* Delete note */
             case "-d": case "--delete":
+                /* Delete note from the note tracker */
                 let index = Number(extra[0]);
                 if (!Number.isInteger(index)) {
                     throw new ArgumentError("Argument for delete must be a number");
                 }
                 note.delete(index);
-                note.serialize();
+                note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
                 break;
             /* Print notes */
             case "-p": case "--print":
-                note.print();
+                console.log("My Notebook");
+                console.log("---------------------------");
+                console.log(note.print());
+                console.log("---------------------------");
                 break;
             /* Clear note list */
             case "-c": case "--clear":
                 note.clear();
-                note.serialize();
+                note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
                 break;
             /* Show help message */
             case "-h": case "--help":
-                print_man();
+                printManual();
                 break;
             /* Unknown argument */
             default:
-                throw new ArgumentError("Invalid option passed :c Please, call with \"-h\" or \"--help\" for help.");
+                throw new ArgumentError("Invalid option passed :c Refer to \"-h\" or \"--help\" for help.");
         }
     }
 } catch(err) {

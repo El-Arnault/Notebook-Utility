@@ -1,111 +1,127 @@
 /* @flow */
 
 /**
- * Module contains note list class definition.
+ * Module contains notre list class definition.
  */
 
-const ArgumentError = require("./arg-error.js");
-const file = "data.json";
+import ArgumentError from "./arg-error.js";
+import fs from "fs";
 
-function NoteList() {
-    this.list = undefined;
-    this._counter = 0;
-    this.deserialize();
+class Entry {
+
+    previous: ?Entry;
+    next: ?Entry;
+    value: string;
+
+    constructor(value: string) {
+        this.previous = undefined;
+        this.next = undefined;
+        this.value = value;
+    }
 }
 
-NoteList.prototype.toArray = function() : string[] {
-    var list = [];
-    var current = this.list;
-    while (current != undefined) {
-        list.unshift(current.value);
-        current = current.next;
+export default class NoteList {
+
+    list: ?Entry;
+    _counter: number;
+
+
+    constructor() {
+        this.list = undefined;
+        this._counter = 0;
     }
-    return list;
-};
 
-NoteList.prototype.fromArray = function(data : string[]) {
-    data.forEach((entry) => {
-        this.add(entry);
-    });
-};
-
-NoteList.prototype.add = function(val : string) {
-    var entry = {
-        previous : undefined,
-        next : undefined,
-        value : val
-    };
-    entry.next = this.list;
-    if (this.list !== undefined) {
-        this.list.previous = entry;
+    static fromFile(file: string): NoteList {
+        let notelist = new NoteList();
+        notelist.deserialize(file);
+        return notelist;
     }
-    this.list = entry;
-    this._counter++;
-};
 
-NoteList.prototype.delete = function(index : number) {
-    if (this._counter < index) {
-        /* Out of bounds query */
-        throw new ArgumentError("No such note found :c");
-    } else {
-        /* Locate entry */
-        index = this._counter + 1 - index;
-        var current = this.list;
-        for (let i = 1; i < index; i++) {
+    toArray(): string[] {
+        let list = [];
+        let current = this.list;
+        while (current != undefined) {
+            list.unshift(current.value);
             current = current.next;
         }
-        /* Delete it */
-        if (current.previous !== undefined) {
-            current.previous.next = current.next;
+        return list;
+    }
+
+    fromArray(data: string[]) {
+        data.forEach(entry => this.add(entry));
+    }
+
+    add(value: string) {
+        let entry = new Entry(value);
+        entry.next = this.list;
+        if (this.list != undefined) {
+            this.list.previous = entry;
+        }
+        this._counter++;
+        this.list = entry;
+    }
+
+    delete(index: number) {
+        if (this._counter < index || index <= 0) {
+            /* Out of bounds query */
+            throw new ArgumentError("No such note found :c");
         } else {
-            this.list = current.next;
+            /* Locate entry */
+            index = this._counter + 1 - index;
+            let current: Entry = this.list;
+            for (let i = 1; i < index; i++) {
+                current = current.next;
+            }
+            /* Delete found entry */
+            if (current.previous != undefined) {
+                current.previous.next = current.next;
+            } else {
+                this.list = current.next;
+            }
+            if (current.next != undefined) {
+                current.next.previous = current.previous;
+            }
+            this._counter--;
         }
-        if (current.next !== undefined) {
-            current.next.previous = current.previous;
-        }
-        this._counter--;
     }
-};
 
-NoteList.prototype.clear = function() {
-    this._counter = 0;
-    this.list = undefined;
-};
+    clear() {
+        this._counter = 0;
+        this.list = undefined;
+    }
 
-NoteList.prototype.print = function() {
-    console.log("      Notebook     ");
-    console.log("-------------------");
+    print(): string {
+        if (this._counter == 0) {
+            return "empty...";
+        } else {
+            let last = this._counter - 1;
+            return this.toArray().reduce((previous, current, index) => {
+                let result = `${previous}${index + 1}) ${current}`;
+                if (index != last) {
+                    return result + "\n";
+                } else {
+                    return result;
+                }
+            }, "");
+        }
+    }
 
-    if (this._counter == 0) {
-        console.log("empty...");
-    } else {
-        var i = 1;
-        this.toArray().forEach((entry) => {
-            console.log(`${i++}) ${entry}`);
+    serialize(file: string) {
+        let data = this.toArray();
+        fs.writeFileSync(file, JSON.stringify(data), {
+            "encoding" : "utf-8",
+            "mode" : 0o640,
+            "flag" : "w"
         });
     }
-    console.log("-------------------");
-};
 
-NoteList.prototype.serialize = function() {
-    const fs = require("fs");
-    let data = this.toArray();
-    fs.writeFileSync(file, JSON.stringify(data), {
-        "encoding" : "utf-8",
-        "mode" : 0o640,
-        "flag" : "w"
-    });
-};
-
-NoteList.prototype.deserialize = function() {
-    const fs = require("fs");
-    if (fs.existsSync(file)) {
-        var string = fs.readFileSync(file, {
-            encoding :"utf-8"
-        });
-        var data = JSON.parse(string);
-        this.fromArray(data);
+    deserialize(file: string) {
+        if (fs.existsSync(file)) {
+            let contents = fs.readFileSync(file, {
+                "encoding" : "utf-8"
+            });
+            let data = JSON.parse(contents);
+            this.fromArray(data);
+        }
     }
-};
-
-module.exports = NoteList;
+}

@@ -1,16 +1,25 @@
 #!/usr/bin/env node
-/*       */
+"use strict";
+
+var _notelist = require("./notelist.js");
+
+var _notelist2 = _interopRequireDefault(_notelist);
+
+var _argError = require("./arg-error.js");
+
+var _argError2 = _interopRequireDefault(_argError);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* Function prints manual */
+
 
 /**
  * Main script for CLI.
  */
 
 /* Export modules */
-const NoteList = require("./notelist.js");
-const ArgumentError = require("./arg-error.js");
-
-/* Function prints manual */
-function print_man() {
+function printManual() {
     console.log("Options:\n");
     console.log("-a --add    [entry]  Add a note");
     console.log("-d --delete [index]  Delete a note with the given index");
@@ -19,59 +28,63 @@ function print_man() {
 }
 
 /* Initialize note list */
-let note = new NoteList();
-let command = process.argv[2];
-let extra = process.argv.slice(3);
+var file = "data.json";
+var note = _notelist2.default.fromFile(file);
+var command = process.argv[2];
+var extra = process.argv.slice(3);
 try {
     /* Process arguments */
     if (command == undefined) {
-        console.log("Call \"notes\" with -h or --help to get information about all available options");
+        console.log("Call \"notes -h\" to get information about the program");
     } else {
-        switch(command) {
-            /* Add note */
-            case "-a": case "--add":
-                let entry = extra.reduce(function(prev, current, index) {
+        switch (command) {
+            case "-a":case "--add":
+                /* Add note to the note tracker */
+                var entry = extra.reduce(function (prev, current, index) {
                     return index == 0 ? current : prev + " " + current;
                 }, "");
                 note.add(entry);
-                note.serialize();
+                note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
                 break;
-            /* Delete note */
-            case "-d": case "--delete":
-                let index = Number(extra[0]);
+            case "-d":case "--delete":
+                /* Delete note from the note tracker */
+                var index = Number(extra[0]);
                 if (!Number.isInteger(index)) {
-                    throw new ArgumentError("Argument for delete must be a number");
+                    throw new _argError2.default("Argument for delete must be a number");
                 }
                 note.delete(index);
-                note.serialize();
+                note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
                 break;
             /* Print notes */
-            case "-p": case "--print":
-                note.print();
+            case "-p":case "--print":
+                console.log("My Notebook");
+                console.log("---------------------------");
+                console.log(note.print());
+                console.log("---------------------------");
                 break;
             /* Clear note list */
-            case "-c": case "--clear":
+            case "-c":case "--clear":
                 note.clear();
-                note.serialize();
+                note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
                 break;
             /* Show help message */
-            case "-h": case "--help":
-                print_man();
+            case "-h":case "--help":
+                printManual();
                 break;
             /* Unknown argument */
             default:
-                throw new ArgumentError("Invalid option passed :c Please, call with \"-h\" or \"--help\" for help.");
+                throw new _argError2.default("Invalid option passed :c Refer to \"-h\" or \"--help\" for help.");
         }
     }
-} catch(err) {
+} catch (err) {
     /* Handle known errors */
-    if (err instanceof ArgumentError) {
+    if (err instanceof _argError2.default) {
         console.error(err.message);
     } else {
         throw err;

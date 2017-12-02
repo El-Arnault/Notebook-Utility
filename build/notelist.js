@@ -1,111 +1,153 @@
-/*       */
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _argError = require("./arg-error.js");
+
+var _argError2 = _interopRequireDefault(_argError);
+
+var _fs = require("fs");
+
+var _fs2 = _interopRequireDefault(_fs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Module contains note list class definition.
+ * Module contains notre list class definition.
  */
 
-const ArgumentError = require("./arg-error.js");
-const file = "data.json";
+var Entry = function Entry(value) {
+    _classCallCheck(this, Entry);
 
-function NoteList() {
-    this.list = undefined;
-    this._counter = 0;
-    this.deserialize();
-}
+    this.previous = undefined;
+    this.next = undefined;
+    this.value = value;
+};
 
-NoteList.prototype.toArray = function()            {
-    var list = [];
-    var current = this.list;
-    while (current != undefined) {
-        list.unshift(current.value);
-        current = current.next;
+var NoteList = function () {
+    function NoteList() {
+        _classCallCheck(this, NoteList);
+
+        this.list = undefined;
+        this._counter = 0;
     }
-    return list;
-};
 
-NoteList.prototype.fromArray = function(data           ) {
-    data.forEach((entry) => {
-        this.add(entry);
-    });
-};
-
-NoteList.prototype.add = function(val         ) {
-    var entry = {
-        previous : undefined,
-        next : undefined,
-        value : val
-    };
-    entry.next = this.list;
-    if (this.list !== undefined) {
-        this.list.previous = entry;
-    }
-    this.list = entry;
-    this._counter++;
-};
-
-NoteList.prototype.delete = function(index         ) {
-    if (this._counter < index) {
-        /* Out of bounds query */
-        throw new ArgumentError("No such note found :c");
-    } else {
-        /* Locate entry */
-        index = this._counter + 1 - index;
-        var current = this.list;
-        for (let i = 1; i < index; i++) {
-            current = current.next;
+    _createClass(NoteList, [{
+        key: "toArray",
+        value: function toArray() {
+            var list = [];
+            var current = this.list;
+            while (current != undefined) {
+                list.unshift(current.value);
+                current = current.next;
+            }
+            return list;
         }
-        /* Delete it */
-        if (current.previous !== undefined) {
-            current.previous.next = current.next;
-        } else {
-            this.list = current.next;
+    }, {
+        key: "fromArray",
+        value: function fromArray(data) {
+            var _this = this;
+
+            data.forEach(function (entry) {
+                return _this.add(entry);
+            });
         }
-        if (current.next !== undefined) {
-            current.next.previous = current.previous;
+    }, {
+        key: "add",
+        value: function add(value) {
+            var entry = new Entry(value);
+            entry.next = this.list;
+            if (this.list != undefined) {
+                this.list.previous = entry;
+            }
+            this._counter++;
+            this.list = entry;
         }
-        this._counter--;
-    }
-};
+    }, {
+        key: "delete",
+        value: function _delete(index) {
+            if (this._counter < index || index <= 0) {
+                /* Out of bounds query */
+                throw new _argError2.default("No such note found :c");
+            } else {
+                /* Locate entry */
+                index = this._counter + 1 - index;
+                var current = this.list;
+                for (var i = 1; i < index; i++) {
+                    current = current.next;
+                }
+                /* Delete found entry */
+                if (current.previous != undefined) {
+                    current.previous.next = current.next;
+                } else {
+                    this.list = current.next;
+                }
+                if (current.next != undefined) {
+                    current.next.previous = current.previous;
+                }
+                this._counter--;
+            }
+        }
+    }, {
+        key: "clear",
+        value: function clear() {
+            this._counter = 0;
+            this.list = undefined;
+        }
+    }, {
+        key: "print",
+        value: function print() {
+            if (this._counter == 0) {
+                return "empty...";
+            } else {
+                var last = this._counter - 1;
+                return this.toArray().reduce(function (previous, current, index) {
+                    var result = "" + previous + (index + 1) + ") " + current;
+                    if (index != last) {
+                        return result + "\n";
+                    } else {
+                        return result;
+                    }
+                }, "");
+            }
+        }
+    }, {
+        key: "serialize",
+        value: function serialize(file) {
+            var data = this.toArray();
+            _fs2.default.writeFileSync(file, JSON.stringify(data), {
+                "encoding": "utf-8",
+                "mode": 416,
+                "flag": "w"
+            });
+        }
+    }, {
+        key: "deserialize",
+        value: function deserialize(file) {
+            if (_fs2.default.existsSync(file)) {
+                var contents = _fs2.default.readFileSync(file, {
+                    "encoding": "utf-8"
+                });
+                var data = JSON.parse(contents);
+                this.fromArray(data);
+            }
+        }
+    }], [{
+        key: "fromFile",
+        value: function fromFile(file) {
+            var notelist = new NoteList();
+            notelist.deserialize(file);
+            return notelist;
+        }
+    }]);
 
-NoteList.prototype.clear = function() {
-    this._counter = 0;
-    this.list = undefined;
-};
+    return NoteList;
+}();
 
-NoteList.prototype.print = function() {
-    console.log("      Notebook     ");
-    console.log("-------------------");
-
-    if (this._counter == 0) {
-        console.log("empty...");
-    } else {
-        var i = 1;
-        this.toArray().forEach((entry) => {
-            console.log(`${i++}) ${entry}`);
-        });
-    }
-    console.log("-------------------");
-};
-
-NoteList.prototype.serialize = function() {
-    const fs = require("fs");
-    let data = this.toArray();
-    fs.writeFileSync(file, JSON.stringify(data), {
-        "encoding" : "utf-8",
-        "mode" : 0o640,
-        "flag" : "w"
-    });
-};
-
-NoteList.prototype.deserialize = function() {
-    const fs = require("fs");
-    if (fs.existsSync(file)) {
-        var string = fs.readFileSync(file, {
-            encoding :"utf-8"
-        });
-        var data = JSON.parse(string);
-        this.fromArray(data);
-    }
-};
-
-module.exports = NoteList;
+exports.default = NoteList;
