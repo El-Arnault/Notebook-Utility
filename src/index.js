@@ -19,7 +19,7 @@ function printManual() {
 }
 
 /* Initialize note list */
-const file = "data.json";
+const file = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + "/.notes.json";
 let note = NoteList.fromFile(file);
 let command = process.argv[2];
 let extra = process.argv.slice(3);

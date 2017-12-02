@@ -28,7 +28,7 @@ function printManual() {
 }
 
 /* Initialize note list */
-var file = "data.json";
+var file = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + "/.notes.json";
 var note = _notelist2.default.fromFile(file);
 var command = process.argv[2];
 var extra = process.argv.slice(3);
