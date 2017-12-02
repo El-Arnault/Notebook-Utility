@@ -1,7 +1,7 @@
 {
     "name": "notebook-utility",
-    "version": "1.0.9",
-    "description": "A simplistic note tracker with cli.",
+    "version": "1.1.2",
+    "description": "A simplistic note tracker with cli",
     "main": "build/index.js",
     "scripts": {
         "start": "node build/index.js",
@@ -24,12 +24,13 @@
         "url": "https://github.com/paper-lark/notebook-utility/issues"
     },
     "bin": {
-        "notes": "node build/index.js"
+        "notes": "./build/index.js"
     },
     "homepage": "https://github.com/paper-lark/notebook-utility#readme",
     "devDependencies": {
         "babel-cli": "^6.26.0",
         "babel-eslint": "^8.0.3",
+        "babel-plugin-transform-builtin-extend": "^1.1.2",
         "babel-plugin-transform-flow-strip-types": "^6.22.0",
         "babel-preset-env": "^1.6.1",
         "babel-preset-flow": "^6.23.0",

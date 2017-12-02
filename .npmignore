@@ -1,0 +1,14 @@
+# Source files
+src
+
+# Temporary files
+data.json
+
+# Visual Studio Code configuration
+.vscode
+
+# Tool configurations
+.babelrc
+.eslintrc
+.flowconfig
+.gitignore

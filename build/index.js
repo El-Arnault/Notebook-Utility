@@ -28,7 +28,7 @@ function printManual() {
 }
 
 /* Initialize note list */
-var file = "data.json";
+var file = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + "/.notes.json";
 var note = _notelist2.default.fromFile(file);
 var command = process.argv[2];
 var extra = process.argv.slice(3);
@@ -39,11 +39,12 @@ try {
     } else {
         switch (command) {
             case "-a":case "--add":
-                /* Add note to the note tracker */
-                var entry = extra.reduce(function (prev, current, index) {
-                    return index == 0 ? current : prev + " " + current;
-                }, "");
-                note.add(entry);
+                /* Add each non-empty note to the note tracker */
+                extra.forEach(function (entry) {
+                    if (entry !== "") {
+                        note.add(entry);
+                    }
+                });
                 note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");

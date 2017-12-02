@@ -1,8 +1,9 @@
-# Temporary file
+# Distribution info
 data.json
+build
 
 # Dependency directories
-node_modules/
+node_modules
 
 # Visual Studio Code folder
 .vscode

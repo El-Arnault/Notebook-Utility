@@ -19,7 +19,7 @@ function printManual() {
 }
 
 /* Initialize note list */
-const file = "data.json";
+const file = (process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE) + "/.notes.json";
 let note = NoteList.fromFile(file);
 let command = process.argv[2];
 let extra = process.argv.slice(3);
@@ -30,11 +30,12 @@ try {
     } else {
         switch(command) {
             case "-a": case "--add":
-                /* Add note to the note tracker */
-                let entry = extra.reduce(function(prev, current, index) {
-                    return index == 0 ? current : prev + " " + current;
-                }, "");
-                note.add(entry);
+                /* Add each non-empty note to the note tracker */
+                extra.forEach(entry => {
+                    if (entry !== "") {
+                        note.add(entry);
+                    }
+                });
                 note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");
