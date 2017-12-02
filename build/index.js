@@ -39,11 +39,12 @@ try {
     } else {
         switch (command) {
             case "-a":case "--add":
-                /* Add note to the note tracker */
-                var entry = extra.reduce(function (prev, current, index) {
-                    return index == 0 ? current : prev + " " + current;
-                }, "");
-                note.add(entry);
+                /* Add each non-empty note to the note tracker */
+                extra.forEach(function (entry) {
+                    if (entry !== "") {
+                        note.add(entry);
+                    }
+                });
                 note.serialize(file);
                 /* Successful termination message */
                 console.log("Done c:");

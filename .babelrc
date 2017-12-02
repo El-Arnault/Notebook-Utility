@@ -1,4 +1,9 @@
 {
     "presets": ["flow", "env"],
-    "plugins": ["transform-flow-strip-types"]
+    "plugins": [
+        "transform-flow-strip-types", 
+        ["babel-plugin-transform-builtin-extend", {
+            "globals": ["Error", "Array"]
+        }]
+    ]
 }
