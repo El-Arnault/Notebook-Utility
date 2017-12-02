@@ -9,6 +9,6 @@ data.json
 
 # Tool configurations
 .babelrc
-.eslint
+.eslintrc
 .flowconfig
 .gitignore
