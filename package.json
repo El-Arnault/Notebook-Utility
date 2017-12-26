@@ -1,6 +1,6 @@
 {
     "name": "notebook-utility",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "A simplistic note tracker with cli",
     "main": "build/index.js",
     "scripts": {
