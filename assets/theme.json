@@ -1,0 +1,11 @@
+{
+    "border": true,
+    "borderColor": "default",
+    "backgroundColor": "default",
+    "focusColor": "green",
+    "selectedColor": "blue",
+    "textColor": "default",
+    "scrollbarColor": "default",
+    "scrollbarBGColor": "default",
+    "scrollbarMarker": "+"
+}

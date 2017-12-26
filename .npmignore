@@ -1,14 +1,13 @@
-# Source files
-src
+# File system files
+.DS_Store
 
-# Temporary files
-data.json
+# Source files
+source
 
 # Visual Studio Code configuration
 .vscode
 
 # Tool configurations
-.babelrc
-.eslintrc
+.eslintrc.js
 .flowconfig
 .gitignore

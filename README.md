@@ -2,7 +2,7 @@
 
 ## Description
 
-Simplistic note tracker with command line interface based on JavaScript and Node.js.
+Simplistic note tracker with text-based user interface based on JavaScript and Node.js.
 
 Hope you will enjoy using it!
 
@@ -29,55 +29,38 @@ Notebook utility can be invoked with the following command:
 notes
 ```
 
-Help can be invoked with:
+The screen area is split into three zones. The top left area is where your notes will be shown. The are on the right shows all you need to know in order to interact with the note tracker.
 
-```bash
-notes --help
-```
+Along with arrow keys you can use vi-style **K** and **J** keys to navigate through the list.
+Below you'll find the table of all shortcuts and what they do:
 
-Below is the list of all options that notebook utility takes.
+ Shortcut   | Description
+------------|----------------------------
+**K** / **J** | Move curson one entry up/down.
+**M**       | Enter an interactive mode where you'll be able to move the highlighted note up/down to arrange your notes.
+**D**       | Delete the currently highlighted note.
+**C**       | Clear the note tracker.
+**A**       | Add a new note at the current position.
+**S**       | Save changes.
+**Q**       | Save changes and quit.
 
-Option          | Arguments   | Description
---------------- | ----------- | -----------------------------------
-`-a` `--add`    | `[entry]`   | Add a note
-`-d` `--delete` | `[index]`   | Delete a note at the passed index
-`-p` `--print`  |             | Print the notebook contents
-`-c` `--clear`  |             | Clear the notebook
-`-h` `--help`   |             | Print the list of options
+**_Note:_** Currently, there is a known problem that causes clicking "Cancel" while adding a new note add the note nonetheless if the input field was not empty. It comes upstream but be sure we are working on fixing it.
 
-# Examples
+## Theme
 
-Add a note:
+Notebook utility supports simple themes. Theme is specified in JSON format and is stored in **assets/theme.json** file. Below is the table of all options and what they do. All color values can be specified as `'default'` for the default color, as a color name (for example, `'red'`), or as a hex value.
 
-```bash
-notes --add "Hello world"
-```
-
-Optionally, you can add several notes at once:
-
-```bash
-notes --add "The weather is nice today" "Go for a walk" "Make some coffee"
-```
-
-List all existing notes:
-
-```bash 
-notes --print
-```
-
-Delete note number two:
-
-```bash
-notes --delete 2
-```
-
-Clear the note tracker:
-
-```bash
-notes --clear
-```
-
-*__Warning:__* This will delete all your notes, so be careful!
+ Property       | Description
+----------------|-----------------
+border          | `true` to show border, `false` otherwise
+borderColor     | Border color
+backgroundColor | Background color
+focusColor      | Highlight color for notes
+selectedColor   | Highlight color while moving notes
+textColor       | Text color
+scrollbarColor  | Main color for the scrollbar mark
+scrollbarBGColor| Background color for the scrollbar mark
+scrollbarMarker | Scrollbar mark to display current position, can be any symbol
 
 
 ## License

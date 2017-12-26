@@ -1,12 +1,14 @@
-# Distribution info
-data.json
-build
+# System files
+.DS_Store
+
+# Build
+build/
 
 # Dependency directories
 node_modules
 
 # Visual Studio Code folder
-.vscode
+.vscode/
 
 # Optional npm cache directory
 .npm
